@@ -2,6 +2,9 @@
 # -*- coding: utf-8 -*-
 
 from collections import namedtuple
+from algorithims.greedy import greedy_most_valueable_items,greedy_most_value_density_items
+from algorithims.dynamic_programming import dynamic_programming
+
 Item = namedtuple("Item", ['index', 'value', 'weight'])
 
 def solve_it(input_data):
@@ -32,6 +35,15 @@ def solve_it(input_data):
             taken[item.index] = 1
             value += item.value
             weight += item.weight
+    
+    if len(taken)>1000 or capacity>=1000000:
+        # override the values by the most basic greedy algo which takes the most valueable item first
+        #value,taken = greedy_most_valueable_items(items,capacity)
+        # override the values by the greedy algo which takes as per the most value/weight 
+        value,taken = greedy_most_value_density_items(items,capacity)
+    else:
+        # override the values by the output from dynamic programming solution
+        value,taken = dynamic_programming(items,capacity)
     
     # prepare the solution in the specified output format
     output_data = str(value) + ' ' + str(0) + '\n'
